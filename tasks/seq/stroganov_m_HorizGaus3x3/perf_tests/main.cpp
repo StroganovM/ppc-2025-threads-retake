@@ -37,8 +37,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_pipeline_run) {
   task_data_seq->outputs_count.emplace_back(output_image.size());
 
   // Create Task
-  auto test_task_sequential =
-      std::make_shared<stroganov_m_HorizGaus3x3_seq::ImageFilterSequential>(task_data_seq);
+  auto test_task_sequential = std::make_shared<stroganov_m_HorizGaus3x3_seq::ImageFilterSequential>(task_data_seq);
 
   // Create Perf attributes
   auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
@@ -92,8 +91,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_task_run) {
   task_data_seq->outputs_count.emplace_back(output_image.size());
 
   // Create Task
-  auto test_task_sequential =
-      std::make_shared<stroganov_m_HorizGaus3x3_seq::ImageFilterSequential>(task_data_seq);
+  auto test_task_sequential = std::make_shared<stroganov_m_HorizGaus3x3_seq::ImageFilterSequential>(task_data_seq);
 
   // Create Perf attributes
   auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
