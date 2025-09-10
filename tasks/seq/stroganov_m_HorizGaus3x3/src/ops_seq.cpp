@@ -29,22 +29,23 @@ bool stroganov_m_HorizGaus3x3_seq::ImageFilterSequential::ValidationImpl() {
 }
 
 bool stroganov_m_HorizGaus3x3_seq::ImageFilterSequential::RunImpl() {
-  double sum = kernel_[0] + kernel_[1] + kernel_[2];
-  for (int i = 0; i < height_; ++i) {
-    for (int j = 0; j < width_; ++j) {
-      double filtered_value = 0.0;
-      for (int k = -1; k <= 1; ++k) {
-        int col = j + k;
-        if (col >= 0 && col < width_) {
-          filtered_value += input_[(i * width_) + col] * kernel_[k + 1];
+    double sum = kernel_[0] + kernel_[1] + kernel_[2];
+    if (sum == 0.0) sum = 1.0;
+    for (int i = 0; i < height_; ++i) {
+        output_[i * width_] = 
+            (kernel_[1] * input_[i * width_] + kernel_[2] * input_[i * width_ + 1]) / sum;
+
+        for (int j = 1; j < width_ - 1; ++j) {
+            output_[i * width_ + j] =
+                (kernel_[0] * input_[i * width_ + j - 1] +
+                 kernel_[1] * input_[i * width_ + j] +
+                 kernel_[2] * input_[i * width_ + j + 1]) / sum;
         }
-      }
-
-      output_[(i * width_) + j] = filtered_value / sum;
+        output_[i * width_ + width_ - 1] =
+            (kernel_[0] * input_[i * width_ + width_ - 2] +
+             kernel_[1] * input_[i * width_ + width_ - 1]) / sum;
     }
-  }
-
-  return true;
+    return true;
 }
 
 bool stroganov_m_HorizGaus3x3_seq::ImageFilterSequential::PostProcessingImpl() {
