@@ -5,7 +5,7 @@
 
 #include "core/task/include/task.hpp"
 
-namespace stroganov_m_HorizGaus3x3_seq {
+namespace stroganov_m_horiz_gaus3x3_seq {
 
 class ImageFilterSequential : public ppc::core::Task {
  public:
@@ -26,4 +26,4 @@ class ImageFilterSequential : public ppc::core::Task {
   void ApplyGaussianFilter();
 };
 
-}  // namespace stroganov_m_HorizGaus3x3_seq
+}  // namespace stroganov_m_horiz_gaus3x3_seq

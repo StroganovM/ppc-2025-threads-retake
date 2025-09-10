@@ -11,8 +11,8 @@
 #include "seq/stroganov_m_HorizGaus3x3/include/ops_seq.hpp"
 
 TEST(stroganov_m_HorizGaus3x3_seq, test_pipeline_run) {
-  constexpr size_t kWidth = 9000;
-  constexpr size_t kHeight = 9000;
+  constexpr size_t kWidth = 11000;
+  constexpr size_t kHeight = 11000;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
   std::vector<double> output_image(kWidth * kHeight, 0.0);
   std::vector<double> expected(kWidth * kHeight, 0.0);
@@ -37,7 +37,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_pipeline_run) {
   task_data_seq->outputs_count.emplace_back(output_image.size());
 
   // Create Task
-  auto test_task_sequential = std::make_shared<stroganov_m_HorizGaus3x3_seq::ImageFilterSequential>(task_data_seq);
+  auto test_task_sequential = std::make_shared<stroganov_m_horiz_gaus3x3_seq::ImageFilterSequential>(task_data_seq);
 
   // Create Perf attributes
   auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
@@ -65,8 +65,8 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_pipeline_run) {
 }
 
 TEST(stroganov_m_HorizGaus3x3_seq, test_task_run) {
-  constexpr size_t kWidth = 9000;
-  constexpr size_t kHeight = 9000;
+  constexpr size_t kWidth = 11000;
+  constexpr size_t kHeight = 11000;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
   std::vector<double> output_image(kWidth * kHeight, 0.0);
   std::vector<double> expected(kWidth * kHeight, 0.0);
@@ -91,7 +91,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_task_run) {
   task_data_seq->outputs_count.emplace_back(output_image.size());
 
   // Create Task
-  auto test_task_sequential = std::make_shared<stroganov_m_HorizGaus3x3_seq::ImageFilterSequential>(task_data_seq);
+  auto test_task_sequential = std::make_shared<stroganov_m_horiz_gaus3x3_seq::ImageFilterSequential>(task_data_seq);
 
   // Create Perf attributes
   auto perf_attr = std::make_shared<ppc::core::PerfAttr>();
