@@ -199,7 +199,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_sharp_transitions) {
   task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
   task_data_seq->outputs_count.emplace_back(output_image.size());
 
-  stroganov_m_HorizGaus3x3_seq::ImageFilterSequential image_filter_sequential(task_data_seq);
+  stroganov_m_horiz_gaus3x3_seq::ImageFilterSequential image_filter_sequential(task_data_seq);
 
   ASSERT_EQ(image_filter_sequential.Validation(), true);
 

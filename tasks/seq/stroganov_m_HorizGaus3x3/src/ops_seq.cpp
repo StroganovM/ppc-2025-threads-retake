@@ -40,7 +40,7 @@ bool stroganov_m_horiz_gaus3x3_seq::ImageFilterSequential::RunImpl() {
                                    kernel_[2] * input_[(i * width_) + j + 1]) /
                                   sum;
     }
-    output_[i * width_ + width_ - 1] =
+    output_[(i * width_) + width_ - 1] =
         (kernel_[0] * input_[(i * width_) + width_ - 2] + kernel_[1] * input_[(i * width_) + width_ - 1]) / sum;
   }
   return true;
