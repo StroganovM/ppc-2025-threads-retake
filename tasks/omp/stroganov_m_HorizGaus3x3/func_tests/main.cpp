@@ -76,7 +76,7 @@ TEST(stroganov_m_horiz_gaus3x3_omp, VerticalLines_Smoothed) {
   ASSERT_EQ(image_filter_omp.Validation(), true);
 
   image_filter_omp.PreProcessing();
-  iimage_filter_omp.Run();
+  image_filter_omp.Run();
   image_filter_omp.PostProcessing();
 
   for (size_t i = 0; i < kHeight; ++i) {
