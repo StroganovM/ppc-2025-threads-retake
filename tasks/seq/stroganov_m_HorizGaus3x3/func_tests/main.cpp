@@ -87,46 +87,46 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_10_vertical_lines) {
 }
 
 TEST(stroganov_m_HorizGaus3x3_seq, test_horizontal_lines) {
-    constexpr size_t kWidth = 10;
-    constexpr size_t kHeight = 10;
-    std::vector<double> input_image(kWidth * kHeight, 0.0);
-    std::vector<double> output_image(kWidth * kHeight, 0.0);
-    std::vector<double> expected_output(kWidth * kHeight, 0.0);
-    std::vector<int> kernel = {1, 2, 1};
+  constexpr size_t kWidth = 10;
+  constexpr size_t kHeight = 10;
+  std::vector<double> input_image(kWidth * kHeight, 0.0);
+  std::vector<double> output_image(kWidth * kHeight, 0.0);
+  std::vector<double> expected_output(kWidth * kHeight, 0.0);
+  std::vector<int> kernel = {1, 2, 1};
 
+  for (size_t j = 0; j < kWidth; ++j) {
+    input_image[2 * kWidth + j] = 1.0;
+    input_image[7 * kWidth + j] = 1.0;
+  }
+
+  for (size_t row : {2, 7}) {
+    expected_output[row * kWidth + 0] = 0.75;
+    expected_output[row * kWidth + kWidth - 1] = 0.75;
+    for (size_t j = 1; j < kWidth - 1; ++j) {
+      expected_output[row * kWidth + j] = 1.0;
+    }
+  }
+
+  auto task_data_seq = std::make_shared<ppc::core::TaskData>();
+  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
+  task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
+  task_data_seq->inputs_count.emplace_back(input_image.size());
+  task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
+  task_data_seq->outputs_count.emplace_back(output_image.size());
+
+  stroganov_m_horiz_gaus3x3_seq::ImageFilterSequential image_filter_sequential(task_data_seq);
+
+  ASSERT_TRUE(image_filter_sequential.Validation());
+
+  image_filter_sequential.PreProcessing();
+  image_filter_sequential.Run();
+  image_filter_sequential.PostProcessing();
+
+  for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
-        input_image[2 * kWidth + j] = 1.0;
-        input_image[7 * kWidth + j] = 1.0;
+      ASSERT_NEAR(output_image[i * kWidth + j], expected_output[i * kWidth + j], 1e-5);
     }
-
-    for (size_t row : {2, 7}) {
-        expected_output[row * kWidth + 0] = 0.75;
-        expected_output[row * kWidth + kWidth - 1] = 0.75;
-        for (size_t j = 1; j < kWidth - 1; ++j) {
-            expected_output[row * kWidth + j] = 1.0;
-        }
-    }
-
-    auto task_data_seq = std::make_shared<ppc::core::TaskData>();
-    task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
-    task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
-    task_data_seq->inputs_count.emplace_back(input_image.size());
-    task_data_seq->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
-    task_data_seq->outputs_count.emplace_back(output_image.size());
-
-    stroganov_m_horiz_gaus3x3_seq::ImageFilterSequential image_filter_sequential(task_data_seq);
-
-    ASSERT_TRUE(image_filter_sequential.Validation());
-
-    image_filter_sequential.PreProcessing();
-    image_filter_sequential.Run();
-    image_filter_sequential.PostProcessing();
-
-    for (size_t i = 0; i < kHeight; ++i) {
-        for (size_t j = 0; j < kWidth; ++j) {
-            ASSERT_NEAR(output_image[i * kWidth + j], expected_output[i * kWidth + j], 1e-5);
-        }
-    }
+  }
 }
 
 TEST(stroganov_m_HorizGaus3x3_seq, test_empty_image) {
