@@ -23,7 +23,6 @@ class ImageFilterSequential : public ppc::core::Task {
   int kernel_size_ = 3;
   std::vector<int> kernel_;
 
-  void ApplyGaussianFilter();
 };
 
 }  // namespace stroganov_m_horiz_gaus3x3_seq

@@ -10,7 +10,7 @@
 #include "core/task/include/task.hpp"
 #include "seq/stroganov_m_HorizGaus3x3/include/ops_seq.hpp"
 
-TEST(stroganov_m_HorizGaus3x3_seq, test_10_1) {
+TEST(stroganov_m_horiz_gaus3x3_seq, AllOnes_BordersAdjusted) {
   constexpr size_t kWidth = 10;
   constexpr size_t kHeight = 10;
   std::vector<double> input_image(kWidth * kHeight, 1.0);
@@ -45,7 +45,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_10_1) {
   }
 }
 
-TEST(stroganov_m_HorizGaus3x3_seq, test_10_vertical_lines) {
+TEST(stroganov_m_horiz_gaus3x3_seq, VerticalLines_Smoothed) {
   constexpr size_t kWidth = 10;
   constexpr size_t kHeight = 10;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
@@ -86,7 +86,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_10_vertical_lines) {
   }
 }
 
-TEST(stroganov_m_HorizGaus3x3_seq, test_horizontal_lines) {
+TEST(stroganov_m_horiz_gaus3x3_seq, HorizontalLines_Preserved) {
   constexpr size_t kWidth = 10;
   constexpr size_t kHeight = 10;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
@@ -129,7 +129,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_horizontal_lines) {
   }
 }
 
-TEST(stroganov_m_HorizGaus3x3_seq, test_empty_image) {
+TEST(stroganov_m_horiz_gaus3x3_seq, EmptyImage_NoChange) {
   constexpr size_t kWidth = 10;
   constexpr size_t kHeight = 10;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
@@ -159,7 +159,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_empty_image) {
   }
 }
 
-TEST(stroganov_m_HorizGaus3x3_seq, test_sharp_transitions) {
+TEST(stroganov_m_HorizGaus3x3_seq, SharpTransitions_SmoothedEdges) {
   constexpr size_t kWidth = 10;
   constexpr size_t kHeight = 10;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
@@ -207,7 +207,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_sharp_transitions) {
   }
 }
 
-TEST(stroganov_m_HorizGaus3x3_seq, test_smooth_gradients) {
+TEST(stroganov_m_horiz_gaus3x3_seq, SmoothGradient_Preserved) {
   constexpr size_t kWidth = 10;
   constexpr size_t kHeight = 10;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
@@ -248,7 +248,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_smooth_gradients) {
   }
 }
 
-TEST(stroganov_m_HorizGaus3x3_seq, test_all_max) {
+TEST(stroganov_m_horiz_gaus3x3_seq, AllMax_BordersAdjusted) {
   constexpr size_t kWidth = 10;
   constexpr size_t kHeight = 10;
   std::vector<double> input_image(kWidth * kHeight, 255.0);
@@ -283,7 +283,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_all_max) {
   }
 }
 
-TEST(stroganov_m_HorizGaus3x3_seq, test_random_invariant_mean) {
+TEST(stroganov_m_horiz_gaus3x3_seq, RandomImage_MeanInvariant) {
   constexpr size_t kWidth = 100;
   constexpr size_t kHeight = 100;
 
@@ -323,7 +323,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_random_invariant_mean) {
   ASSERT_NEAR(avg_input, avg_output, 1);
 }
 
-TEST(stroganov_m_HorizGaus3x3_seq, test_point_source) {
+TEST(stroganov_m_horiz_gaus3x3_seq, PointSource_Spread) {
   constexpr size_t kWidth = 5;
   constexpr size_t kHeight = 5;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
