@@ -30,7 +30,7 @@ bool stroganov_m_horiz_gaus3x3_omp::ImageFilterOmp::RunImpl() {
     sum = 1.0;
   }
 
-  #pragma omp parallel for
+#pragma omp parallel for
   for (int i = 0; i < height_; ++i) {
     output_[i * width_] = (kernel_[1] * input_[i * width_] + kernel_[2] * input_[(i * width_) + 1]) / sum;
     for (int j = 1; j < width_ - 1; ++j) {
