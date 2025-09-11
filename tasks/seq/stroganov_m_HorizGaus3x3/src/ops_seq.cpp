@@ -20,8 +20,8 @@ bool stroganov_m_horiz_gaus3x3_seq::ImageFilterSequential::ValidationImpl() {
   kernel_ = std::vector<int>(kernel_ptr, kernel_ptr + 3);
   size_t size = input_.size();
   auto sqrt_size = static_cast<size_t>(std::sqrt(size));
-  return (task_data->inputs_count[0] == task_data->outputs_count[0]) &&
-         (kernel_.size() == 3) && (sqrt_size * sqrt_size == size);
+  return (task_data->inputs_count[0] == task_data->outputs_count[0]) && (kernel_.size() == 3) &&
+         (sqrt_size * sqrt_size == size);
 }
 
 bool stroganov_m_horiz_gaus3x3_seq::ImageFilterSequential::RunImpl() {
@@ -49,4 +49,3 @@ bool stroganov_m_horiz_gaus3x3_seq::ImageFilterSequential::PostProcessingImpl() 
   }
   return true;
 }
-
