@@ -40,7 +40,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_10_1) {
 
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
-      ASSERT_NEAR(output_image[i * kWidth + j], expected_output[i * kWidth + j], 1e-5);
+      ASSERT_NEAR(output_image[(i * kWidth) + j], expected_output[(i * kWidth) + j], 1e-5);
     }
   }
 }
@@ -100,10 +100,10 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_horizontal_lines) {
   }
 
   for (size_t row : {2, 7}) {
-    expected_output[row * kWidth + 0] = 0.75;
-    expected_output[row * kWidth + kWidth - 1] = 0.75;
+    expected_output[(row * kWidth) + 0] = 0.75;
+    expected_output[(row * kWidth) + kWidth - 1] = 0.75;
     for (size_t j = 1; j < kWidth - 1; ++j) {
-      expected_output[row * kWidth + j] = 1.0;
+      expected_output[(row * kWidth) + j] = 1.0;
     }
   }
 
@@ -124,7 +124,7 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_horizontal_lines) {
 
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
-      ASSERT_NEAR(output_image[i * kWidth + j], expected_output[i * kWidth + j], 1e-5);
+      ASSERT_NEAR(output_image[(i * kWidth) + j], expected_output[(i * kWidth) + j], 1e-5);
     }
   }
 }
@@ -331,10 +331,10 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_point_source) {
   std::vector<double> expected_output(kWidth * kHeight, 0.0);
   std::vector<int> kernel = {1, 2, 1};
 
-  input_image[2 * kWidth + 2] = 10.0;
-  expected_output[2 * kWidth + 1] = 2.5;
-  expected_output[2 * kWidth + 2] = 5.0;
-  expected_output[2 * kWidth + 3] = 2.5;
+  input_image[(2 * kWidth) + 2] = 10.0;
+  expected_output[(2 * kWidth) + 1] = 2.5;
+  expected_output[(2 * kWidth) + 2] = 5.0;
+  expected_output[(2 * kWidth) + 3] = 2.5;
 
   auto task_data_seq = std::make_shared<ppc::core::TaskData>();
   task_data_seq->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
