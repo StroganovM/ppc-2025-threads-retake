@@ -11,8 +11,8 @@
 #include "omp/stroganov_m_HorizGaus3x3/include/ops_omp.hpp"
 
 TEST(stroganov_m_HorizGaus3x3_omp, test_pipeline_run) {
-  constexpr size_t kWidth = 15000;
-  constexpr size_t kHeight = 15000;
+  constexpr size_t kWidth = 17000;
+  constexpr size_t kHeight = 17000;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
   std::vector<double> output_image(kWidth * kHeight, 0.0);
   std::vector<double> expected(kWidth * kHeight, 0.0);
@@ -65,8 +65,8 @@ TEST(stroganov_m_HorizGaus3x3_omp, test_pipeline_run) {
 }
 
 TEST(stroganov_m_HorizGaus3x3_omp, test_task_run) {
-  constexpr size_t kWidth = 15000;
-  constexpr size_t kHeight = 15000;
+  constexpr size_t kWidth = 17000;
+  constexpr size_t kHeight = 17000;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
   std::vector<double> output_image(kWidth * kHeight, 0.0);
   std::vector<double> expected(kWidth * kHeight, 0.0);
