@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
+#include "omp.h"
 
 namespace stroganov_m_horiz_gaus3x3_omp {
 

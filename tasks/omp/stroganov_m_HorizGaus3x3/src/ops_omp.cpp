@@ -1,4 +1,4 @@
-#include "omp/stroganov_m_HorizGaus3x3/include/ops_seq.hpp"
+#include "omp/stroganov_m_HorizGaus3x3/include/ops_omp.hpp"
 
 #include <cmath>
 #include <cstddef>
@@ -29,6 +29,8 @@ bool stroganov_m_horiz_gaus3x3_omp::ImageFilterOmp::RunImpl() {
   if (sum == 0.0) {
     sum = 1.0;
   }
+
+  #pragma omp parallel for
   for (int i = 0; i < height_; ++i) {
     output_[i * width_] = (kernel_[1] * input_[i * width_] + kernel_[2] * input_[(i * width_) + 1]) / sum;
     for (int j = 1; j < width_ - 1; ++j) {

@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
-#include "omp/stroganov_m_HorizGaus3x3/include/ops_seq.hpp"
+#include "omp/stroganov_m_HorizGaus3x3/include/ops_omp.hpp"
 
 TEST(stroganov_m_horiz_gaus3x3_omp, AllOnes_BordersAdjusted) {
   constexpr size_t kWidth = 10;

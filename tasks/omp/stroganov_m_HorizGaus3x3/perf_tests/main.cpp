@@ -8,7 +8,7 @@
 
 #include "core/perf/include/perf.hpp"
 #include "core/task/include/task.hpp"
-#include "omp/stroganov_m_HorizGaus3x3/include/ops_seq.hpp"
+#include "omp/stroganov_m_HorizGaus3x3/include/ops_omp.hpp"
 
 TEST(stroganov_m_HorizGaus3x3_omp, test_pipeline_run) {
   constexpr size_t kWidth = 15000;
