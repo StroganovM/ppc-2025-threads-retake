@@ -22,7 +22,6 @@ class ImageFilterSequential : public ppc::core::Task {
   int height_;
   int kernel_size_ = 3;
   std::vector<int> kernel_;
-
 };
 
 }  // namespace stroganov_m_horiz_gaus3x3_seq
