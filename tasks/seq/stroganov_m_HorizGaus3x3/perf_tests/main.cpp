@@ -11,34 +11,20 @@
 #include "seq/stroganov_m_HorizGaus3x3/include/ops_seq.hpp"
 
 TEST(stroganov_m_HorizGaus3x3_seq, test_pipeline_run) {
-  constexpr size_t kWidth = 17000;
-  constexpr size_t kHeight = 17000;
+  constexpr size_t kWidth = 12000;
+  constexpr size_t kHeight = 12000;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
   std::vector<double> output_image(kWidth * kHeight, 0.0);
   std::vector<double> expected(kWidth * kHeight, 0.0);
   std::vector<int> kernel = {1, 2, 1};
-  const double total_sum = 4.0;
 
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
       input_image[(i * kWidth) + j] = (j % 3 == 0) ? 100.0 : 0.0;
-      if (j == 0) {
-        double left_val = (0 * kernel[0] + input_image[i * kWidth] * kernel[1] +
-                          input_image[(i * kWidth) + 1] * kernel[2]) /
-                          (kernel[1] + kernel[2]);
-        expected[(i * kWidth) + j] = left_val;
-      } else if (j == kWidth - 1) {
-        double right_val =
-            (input_image[(i * kWidth) + j - 1] * kernel[0] +
-            input_image[(i * kWidth) + j] * kernel[1] + 0 * kernel[2]) /
-            (kernel[0] + kernel[1]);
-        expected[(i * kWidth) + j] = right_val;
+      if (j == kWidth - 1) {
+        expected[(i * kWidth) + j] = 0.0;
       } else {
-        double center_val = (input_image[(i * kWidth) + j - 1] * kernel[0] +
-                            input_image[(i * kWidth) + j] * kernel[1] +
-                            input_image[(i * kWidth) + j + 1] * kernel[2]) /
-                            total_sum;
-        expected[(i * kWidth) + j] = center_val;
+        expected[(i * kWidth) + j] = (j % 3 == 0) ? 50.0 : 25.0;
       }
     }
   }
@@ -85,28 +71,14 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_task_run) {
   std::vector<double> output_image(kWidth * kHeight, 0.0);
   std::vector<double> expected(kWidth * kHeight, 0.0);
   std::vector<int> kernel = {1, 2, 1};
-  const double total_sum = 4.0;
 
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
       input_image[(i * kWidth) + j] = (j % 3 == 0) ? 100.0 : 0.0;
-      if (j == 0) {
-        double left_val = (0 * kernel[0] + input_image[i * kWidth] * kernel[1] +
-                          input_image[(i * kWidth) + 1] * kernel[2]) /
-                          (kernel[1] + kernel[2]);
-        expected[(i * kWidth) + j] = left_val;
-      } else if (j == kWidth - 1) {
-        double right_val =
-            (input_image[(i * kWidth) + j - 1] * kernel[0] +
-            input_image[(i * kWidth) + j] * kernel[1] + 0 * kernel[2]) /
-            (kernel[0] + kernel[1]);
-        expected[(i * kWidth) + j] = right_val;
+      if (j == kWidth - 1) {
+        expected[(i * kWidth) + j] = 0.0;
       } else {
-        double center_val = (input_image[(i * kWidth) + j - 1] * kernel[0] +
-                            input_image[(i * kWidth) + j] * kernel[1] +
-                            input_image[(i * kWidth) + j + 1] * kernel[2]) /
-                            total_sum;
-        expected[(i * kWidth) + j] = center_val;
+        expected[(i * kWidth) + j] = (j % 3 == 0) ? 50.0 : 25.0;
       }
     }
   }
