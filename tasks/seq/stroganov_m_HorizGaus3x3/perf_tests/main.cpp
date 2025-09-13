@@ -29,17 +29,15 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_pipeline_run) {
     for (size_t j = 0; j < kWidth; ++j) {
       if (j == 0) {
         expected[(i * kWidth) + j] =
-            (kernel[1] * input_image[(i * kWidth) + j] +
-            kernel[2] * input_image[(i * kWidth) + j + 1]) / sum;
+            (kernel[1] * input_image[(i * kWidth) + j] + kernel[2] * input_image[(i * kWidth) + j + 1]) / sum;
       } else if (j == kWidth - 1) {
         expected[(i * kWidth) + j] =
-            (kernel[0] * input_image[(i * kWidth) + j - 1] +
-            kernel[1] * input_image[(i * kWidth) + j]) / sum;
+            (kernel[0] * input_image[(i * kWidth) + j - 1] + kernel[1] * input_image[(i * kWidth) + j]) / sum;
       } else {
         expected[(i * kWidth) + j] =
-            (kernel[0] * input_image[(i * kWidth) + j - 1] +
-            kernel[1] * input_image[(i * kWidth) + j] +
-            kernel[2] * input_image[(i * kWidth) + j + 1]) / sum;
+            (kernel[0] * input_image[(i * kWidth) + j - 1] + kernel[1] * input_image[(i * kWidth) + j] +
+             kernel[2] * input_image[(i * kWidth) + j + 1]) /
+            sum;
       }
     }
   }
@@ -98,17 +96,15 @@ TEST(stroganov_m_HorizGaus3x3_seq, test_task_run) {
     for (size_t j = 0; j < kWidth; ++j) {
       if (j == 0) {
         expected[(i * kWidth) + j] =
-            (kernel[1] * input_image[(i * kWidth) + j] +
-            kernel[2] * input_image[(i * kWidth) + j + 1]) / sum;
+            (kernel[1] * input_image[(i * kWidth) + j] + kernel[2] * input_image[(i * kWidth) + j + 1]) / sum;
       } else if (j == kWidth - 1) {
         expected[(i * kWidth) + j] =
-            (kernel[0] * input_image[(i * kWidth) + j - 1] +
-            kernel[1] * input_image[(i * kWidth) + j]) / sum;
+            (kernel[0] * input_image[(i * kWidth) + j - 1] + kernel[1] * input_image[(i * kWidth) + j]) / sum;
       } else {
         expected[(i * kWidth) + j] =
-            (kernel[0] * input_image[(i * kWidth) + j - 1] +
-            kernel[1] * input_image[(i * kWidth) + j] +
-            kernel[2] * input_image[(i * kWidth) + j + 1]) / sum;
+            (kernel[0] * input_image[(i * kWidth) + j - 1] + kernel[1] * input_image[(i * kWidth) + j] +
+             kernel[2] * input_image[(i * kWidth) + j + 1]) /
+            sum;
       }
     }
   }
