@@ -21,10 +21,22 @@ TEST(stroganov_m_HorizGaus3x3_omp, test_pipeline_run) {
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
       input_image[(i * kWidth) + j] = (j % 3 == 0) ? 100.0 : 0.0;
-      if (j == kWidth - 1) {
-        expected[(i * kWidth) + j] = 0.0;
+    }
+  }
+
+  for (size_t i = 0; i < kHeight; ++i) {
+    for (size_t j = 0; j < kWidth; ++j) {
+      if (j == 0) {
+        expected[(i * kWidth) + j] =
+            (kernel[1] * input_image[(i * kWidth) + j] + kernel[2] * input_image[(i * kWidth) + j + 1]) / sum;
+      } else if (j == kWidth - 1) {
+        expected[(i * kWidth) + j] =
+            (kernel[0] * input_image[(i * kWidth) + j - 1] + kernel[1] * input_image[(i * kWidth) + j]) / sum;
       } else {
-        expected[(i * kWidth) + j] = (j % 3 == 0) ? 50.0 : 25.0;
+        expected[(i * kWidth) + j] =
+            (kernel[0] * input_image[(i * kWidth) + j - 1] + kernel[1] * input_image[(i * kWidth) + j] +
+             kernel[2] * input_image[(i * kWidth) + j + 1]) /
+            sum;
       }
     }
   }
@@ -75,10 +87,22 @@ TEST(stroganov_m_HorizGaus3x3_omp, test_task_run) {
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
       input_image[(i * kWidth) + j] = (j % 3 == 0) ? 100.0 : 0.0;
-      if (j == kWidth - 1) {
-        expected[(i * kWidth) + j] = 0.0;
+    }
+  }
+
+  for (size_t i = 0; i < kHeight; ++i) {
+    for (size_t j = 0; j < kWidth; ++j) {
+      if (j == 0) {
+        expected[(i * kWidth) + j] =
+            (kernel[1] * input_image[(i * kWidth) + j] + kernel[2] * input_image[(i * kWidth) + j + 1]) / sum;
+      } else if (j == kWidth - 1) {
+        expected[(i * kWidth) + j] =
+            (kernel[0] * input_image[(i * kWidth) + j - 1] + kernel[1] * input_image[(i * kWidth) + j]) / sum;
       } else {
-        expected[(i * kWidth) + j] = (j % 3 == 0) ? 50.0 : 25.0;
+        expected[(i * kWidth) + j] =
+            (kernel[0] * input_image[(i * kWidth) + j - 1] + kernel[1] * input_image[(i * kWidth) + j] +
+             kernel[2] * input_image[(i * kWidth) + j + 1]) /
+            sum;
       }
     }
   }
