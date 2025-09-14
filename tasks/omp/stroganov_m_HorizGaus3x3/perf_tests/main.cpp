@@ -17,6 +17,7 @@ TEST(stroganov_m_HorizGaus3x3_omp, test_pipeline_run) {
   std::vector<double> output_image(kWidth * kHeight, 0.0);
   std::vector<double> expected(kWidth * kHeight, 0.0);
   std::vector<int> kernel = {1, 2, 1};
+  double sum = kernel[0] + kernel[1] + kernel[2];
 
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
@@ -83,6 +84,7 @@ TEST(stroganov_m_HorizGaus3x3_omp, test_task_run) {
   std::vector<double> output_image(kWidth * kHeight, 0.0);
   std::vector<double> expected(kWidth * kHeight, 0.0);
   std::vector<int> kernel = {1, 2, 1};
+  double sum = kernel[0] + kernel[1] + kernel[2];
 
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
