@@ -32,7 +32,7 @@ bool stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb::RunImpl() {
     sum = 1.0;
   }
 
-  tbb::parallel_for(tbb::blocked_range<int>(0, height_), [this, sum](const tbb::blocked_range<int>& range) {
+  tbb::parallel_for(tbb::blocked_range<int>(0, height_), [this, sum](const tbb::blocked_range<int> &range) {
     for (int i = range.begin(); i < range.end(); ++i) {
       output_[i * width_] = (kernel_[1] * input_[i * width_] + kernel_[2] * input_[(i * width_) + 1]) / sum;
       for (int j = 1; j < width_ - 1; ++j) {
@@ -42,7 +42,7 @@ bool stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb::RunImpl() {
       }
       output_[(i * width_) + width_ - 1] =
           (kernel_[0] * input_[(i * width_) + width_ - 2] + kernel_[1] * input_[(i * width_) + width_ - 1]) / sum;
-      }
+    }
   });
   return true;
 }
