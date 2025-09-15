@@ -33,16 +33,17 @@ bool stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb::RunImpl() {
   double k1_inv = kernel_[1] * inv_sum;
   double k2_inv = kernel_[2] * inv_sum;
 
-  tbb::parallel_for(tbb::blocked_range<int>(0, height_), [this, k0_inv, k1_inv, k2_inv](const tbb::blocked_range<int> &range) {
-    for (int i = range.begin(); i < range.end(); ++i) {
-      const int row_offset = i * width_;
-      output_[row_offset] = (k1_inv * input_[row_offset]) + (k2_inv * input_[row_offset + 1]);
-      for (int j = 1; j < width_ - 1; ++j) {
-        const int idx = row_offset + j;
-        output_[idx] = (k0_inv * input_[idx - 1]) + (k1_inv * input_[idx]) + (k2_inv * input_[idx + 1]);
-      }
-      const int last_idx = row_offset + width_ - 1;
-      output_[last_idx] = (k0_inv * input_[last_idx - 1]) + (k1_inv * input_[last_idx]);
+  tbb::parallel_for(
+      tbb::blocked_range<int>(0, height_), [this, k0_inv, k1_inv, k2_inv](const tbb::blocked_range<int> &range) {
+        for (int i = range.begin(); i < range.end(); ++i) {
+          const int row_offset = i * width_;
+          output_[row_offset] = (k1_inv * input_[row_offset]) + (k2_inv * input_[row_offset + 1]);
+          for (int j = 1; j < width_ - 1; ++j) {
+            const int idx = row_offset + j;
+            output_[idx] = (k0_inv * input_[idx - 1]) + (k1_inv * input_[idx]) + (k2_inv * input_[idx + 1]);
+          }
+        const int last_idx = row_offset + width_ - 1;
+        output_[last_idx] = (k0_inv * input_[last_idx - 1]) + (k1_inv * input_[last_idx]);
     }
   });
   return true;
