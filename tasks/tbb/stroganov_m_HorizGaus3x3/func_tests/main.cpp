@@ -8,9 +8,9 @@
 #include <vector>
 
 #include "core/task/include/task.hpp"
-#include "omp/stroganov_m_HorizGaus3x3/include/ops_omp.hpp"
+#include "tbb/stroganov_m_HorizGaus3x3/include/ops_tbb.hpp"
 
-TEST(stroganov_m_horiz_gaus3x3_omp, AllOnes_BordersAdjusted) {
+TEST(stroganov_m_horiz_gaus3x3_tbb, AllOnes_BordersAdjusted) {
   constexpr size_t kWidth = 10;
   constexpr size_t kHeight = 10;
   std::vector<double> input_image(kWidth * kHeight, 1.0);
@@ -23,20 +23,20 @@ TEST(stroganov_m_horiz_gaus3x3_omp, AllOnes_BordersAdjusted) {
     expected_output[(i * kWidth) + (kWidth - 1)] = 0.75;
   }
 
-  auto task_data_omp = std::make_shared<ppc::core::TaskData>();
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
-  task_data_omp->inputs_count.emplace_back(input_image.size());
-  task_data_omp->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
-  task_data_omp->outputs_count.emplace_back(output_image.size());
+  auto task_data_tbb = std::make_shared<ppc::core::TaskData>();
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
+  task_data_tbb->inputs_count.emplace_back(input_image.size());
+  task_data_tbb->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
+  task_data_tbb->outputs_count.emplace_back(output_image.size());
 
-  stroganov_m_horiz_gaus3x3_omp::ImageFilterOmp image_filter_omp(task_data_omp);
+  stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb image_filter_tbb(task_data_tbb);
 
-  ASSERT_EQ(image_filter_omp.Validation(), true);
+  ASSERT_EQ(image_filter_tbb.Validation(), true);
 
-  image_filter_omp.PreProcessing();
-  image_filter_omp.Run();
-  image_filter_omp.PostProcessing();
+  image_filter_tbb.PreProcessing();
+  image_filter_tbb.Run();
+  image_filter_tbb.PostProcessing();
 
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
@@ -45,7 +45,7 @@ TEST(stroganov_m_horiz_gaus3x3_omp, AllOnes_BordersAdjusted) {
   }
 }
 
-TEST(stroganov_m_horiz_gaus3x3_omp, VerticalLines_Smoothed) {
+TEST(stroganov_m_horiz_gaus3x3_tbb, VerticalLines_Smoothed) {
   constexpr size_t kWidth = 10;
   constexpr size_t kHeight = 10;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
@@ -64,20 +64,20 @@ TEST(stroganov_m_horiz_gaus3x3_omp, VerticalLines_Smoothed) {
     expected_output[((i * kWidth)) + 7] = 0.125;
   }
 
-  auto task_data_omp = std::make_shared<ppc::core::TaskData>();
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
-  task_data_omp->inputs_count.emplace_back(input_image.size());
-  task_data_omp->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
-  task_data_omp->outputs_count.emplace_back(output_image.size());
+  auto task_data_tbb = std::make_shared<ppc::core::TaskData>();
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
+  task_data_tbb->inputs_count.emplace_back(input_image.size());
+  task_data_tbb->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
+  task_data_tbb->outputs_count.emplace_back(output_image.size());
 
-  stroganov_m_horiz_gaus3x3_omp::ImageFilterOmp image_filter_omp(task_data_omp);
+  stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb image_filter_tbb(task_data_tbb);
 
-  ASSERT_EQ(image_filter_omp.Validation(), true);
+  ASSERT_EQ(image_filter_tbb.Validation(), true);
 
-  image_filter_omp.PreProcessing();
-  image_filter_omp.Run();
-  image_filter_omp.PostProcessing();
+  image_filter_tbb.PreProcessing();
+  image_filter_tbb.Run();
+  image_filter_tbb.PostProcessing();
 
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
@@ -86,7 +86,7 @@ TEST(stroganov_m_horiz_gaus3x3_omp, VerticalLines_Smoothed) {
   }
 }
 
-TEST(stroganov_m_horiz_gaus3x3_omp, HorizontalLines_Preserved) {
+TEST(stroganov_m_horiz_gaus3x3_tbb, HorizontalLines_Preserved) {
   constexpr size_t kWidth = 10;
   constexpr size_t kHeight = 10;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
@@ -107,20 +107,20 @@ TEST(stroganov_m_horiz_gaus3x3_omp, HorizontalLines_Preserved) {
     }
   }
 
-  auto task_data_omp = std::make_shared<ppc::core::TaskData>();
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
-  task_data_omp->inputs_count.emplace_back(input_image.size());
-  task_data_omp->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
-  task_data_omp->outputs_count.emplace_back(output_image.size());
+  auto task_data_tbb = std::make_shared<ppc::core::TaskData>();
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
+  task_data_tbb->inputs_count.emplace_back(input_image.size());
+  task_data_tbb->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
+  task_data_tbb->outputs_count.emplace_back(output_image.size());
 
-  stroganov_m_horiz_gaus3x3_omp::ImageFilterOmp image_filter_omp(task_data_omp);
+  stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb image_filter_tbb(task_data_tbb);
 
-  ASSERT_TRUE(image_filter_omp.Validation());
+  ASSERT_TRUE(image_filter_tbb.Validation());
 
-  image_filter_omp.PreProcessing();
-  image_filter_omp.Run();
-  image_filter_omp.PostProcessing();
+  image_filter_tbb.PreProcessing();
+  image_filter_tbb.Run();
+  image_filter_tbb.PostProcessing();
 
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
@@ -129,7 +129,7 @@ TEST(stroganov_m_horiz_gaus3x3_omp, HorizontalLines_Preserved) {
   }
 }
 
-TEST(stroganov_m_horiz_gaus3x3_omp, EmptyImage_NoChange) {
+TEST(stroganov_m_horiz_gaus3x3_tbb, EmptyImage_NoChange) {
   constexpr size_t kWidth = 10;
   constexpr size_t kHeight = 10;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
@@ -137,20 +137,20 @@ TEST(stroganov_m_horiz_gaus3x3_omp, EmptyImage_NoChange) {
   std::vector<double> expected_output(kWidth * kHeight, 0.0);
   std::vector<int> kernel = {1, 2, 1};
 
-  auto task_data_omp = std::make_shared<ppc::core::TaskData>();
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
-  task_data_omp->inputs_count.emplace_back(input_image.size());
-  task_data_omp->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
-  task_data_omp->outputs_count.emplace_back(output_image.size());
+  auto task_data_tbb = std::make_shared<ppc::core::TaskData>();
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
+  task_data_tbb->inputs_count.emplace_back(input_image.size());
+  task_data_tbb->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
+  task_data_tbb->outputs_count.emplace_back(output_image.size());
 
-  stroganov_m_horiz_gaus3x3_omp::ImageFilterOmp image_filter_omp(task_data_omp);
+  stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb image_filter_tbb(task_data_tbb);
 
-  ASSERT_EQ(image_filter_omp.Validation(), true);
+  ASSERT_EQ(image_filter_tbb.Validation(), true);
 
-  image_filter_omp.PreProcessing();
-  image_filter_omp.Run();
-  image_filter_omp.PostProcessing();
+  image_filter_tbb.PreProcessing();
+  image_filter_tbb.Run();
+  image_filter_tbb.PostProcessing();
 
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
@@ -159,7 +159,7 @@ TEST(stroganov_m_horiz_gaus3x3_omp, EmptyImage_NoChange) {
   }
 }
 
-TEST(stroganov_m_HorizGaus3x3_omp, SharpTransitions_SmoothedEdges) {
+TEST(stroganov_m_HorizGaus3x3_tbb, SharpTransitions_SmoothedEdges) {
   constexpr size_t kWidth = 10;
   constexpr size_t kHeight = 10;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
@@ -185,20 +185,20 @@ TEST(stroganov_m_HorizGaus3x3_omp, SharpTransitions_SmoothedEdges) {
     expected_output[(i * kWidth) + 9] = 0.75;
   }
 
-  auto task_data_omp = std::make_shared<ppc::core::TaskData>();
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
-  task_data_omp->inputs_count.emplace_back(input_image.size());
-  task_data_omp->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
-  task_data_omp->outputs_count.emplace_back(output_image.size());
+  auto task_data_tbb = std::make_shared<ppc::core::TaskData>();
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
+  task_data_tbb->inputs_count.emplace_back(input_image.size());
+  task_data_tbb->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
+  task_data_tbb->outputs_count.emplace_back(output_image.size());
 
-  stroganov_m_horiz_gaus3x3_omp::ImageFilterOmp image_filter_omp(task_data_omp);
+  stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb image_filter_tbb(task_data_tbb);
 
-  ASSERT_EQ(image_filter_omp.Validation(), true);
+  ASSERT_EQ(image_filter_tbb.Validation(), true);
 
-  image_filter_omp.PreProcessing();
-  image_filter_omp.Run();
-  image_filter_omp.PostProcessing();
+  image_filter_tbb.PreProcessing();
+  image_filter_tbb.Run();
+  image_filter_tbb.PostProcessing();
 
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
@@ -207,7 +207,7 @@ TEST(stroganov_m_HorizGaus3x3_omp, SharpTransitions_SmoothedEdges) {
   }
 }
 
-TEST(stroganov_m_horiz_gaus3x3_omp, SmoothGradient_Preserved) {
+TEST(stroganov_m_horiz_gaus3x3_tbb, SmoothGradient_Preserved) {
   constexpr size_t kWidth = 10;
   constexpr size_t kHeight = 10;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
@@ -226,20 +226,20 @@ TEST(stroganov_m_horiz_gaus3x3_omp, SmoothGradient_Preserved) {
     expected_output[((i + 1) * kWidth) - 1] = 0.72;
   }
 
-  auto task_data_omp = std::make_shared<ppc::core::TaskData>();
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
-  task_data_omp->inputs_count.emplace_back(input_image.size());
-  task_data_omp->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
-  task_data_omp->outputs_count.emplace_back(output_image.size());
+  auto task_data_tbb = std::make_shared<ppc::core::TaskData>();
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
+  task_data_tbb->inputs_count.emplace_back(input_image.size());
+  task_data_tbb->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
+  task_data_tbb->outputs_count.emplace_back(output_image.size());
 
-  stroganov_m_horiz_gaus3x3_omp::ImageFilterOmp image_filter_omp(task_data_omp);
+  stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb image_filter_tbb(task_data_tbb);
 
-  ASSERT_EQ(image_filter_omp.Validation(), true);
+  ASSERT_EQ(image_filter_tbb.Validation(), true);
 
-  image_filter_omp.PreProcessing();
-  image_filter_omp.Run();
-  image_filter_omp.PostProcessing();
+  image_filter_tbb.PreProcessing();
+  image_filter_tbb.Run();
+  image_filter_tbb.PostProcessing();
 
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
@@ -248,7 +248,7 @@ TEST(stroganov_m_horiz_gaus3x3_omp, SmoothGradient_Preserved) {
   }
 }
 
-TEST(stroganov_m_horiz_gaus3x3_omp, AllMax_BordersAdjusted) {
+TEST(stroganov_m_horiz_gaus3x3_tbb, AllMax_BordersAdjusted) {
   constexpr size_t kWidth = 10;
   constexpr size_t kHeight = 10;
   std::vector<double> input_image(kWidth * kHeight, 255.0);
@@ -261,20 +261,20 @@ TEST(stroganov_m_horiz_gaus3x3_omp, AllMax_BordersAdjusted) {
     expected_output[((i + 1) * kWidth) - 1] = 191.25;
   }
 
-  auto task_data_omp = std::make_shared<ppc::core::TaskData>();
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
-  task_data_omp->inputs_count.emplace_back(input_image.size());
-  task_data_omp->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
-  task_data_omp->outputs_count.emplace_back(output_image.size());
+  auto task_data_tbb = std::make_shared<ppc::core::TaskData>();
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
+  task_data_tbb->inputs_count.emplace_back(input_image.size());
+  task_data_tbb->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
+  task_data_tbb->outputs_count.emplace_back(output_image.size());
 
-  stroganov_m_horiz_gaus3x3_omp::ImageFilterOmp image_filter_omp(task_data_omp);
+  stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb image_filter_tbb(task_data_tbb);
 
-  ASSERT_EQ(image_filter_omp.Validation(), true);
+  ASSERT_EQ(image_filter_tbb.Validation(), true);
 
-  image_filter_omp.PreProcessing();
-  image_filter_omp.Run();
-  image_filter_omp.PostProcessing();
+  image_filter_tbb.PreProcessing();
+  image_filter_tbb.Run();
+  image_filter_tbb.PostProcessing();
 
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {
@@ -283,7 +283,7 @@ TEST(stroganov_m_horiz_gaus3x3_omp, AllMax_BordersAdjusted) {
   }
 }
 
-TEST(stroganov_m_horiz_gaus3x3_omp, RandomImage_MeanInvariant) {
+TEST(stroganov_m_horiz_gaus3x3_tbb, RandomImage_MeanInvariant) {
   constexpr size_t kWidth = 100;
   constexpr size_t kHeight = 100;
 
@@ -300,20 +300,20 @@ TEST(stroganov_m_horiz_gaus3x3_omp, RandomImage_MeanInvariant) {
 
   std::vector<double> output_image(kWidth * kHeight, 0.0);
 
-  auto task_data_omp = std::make_shared<ppc::core::TaskData>();
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
-  task_data_omp->inputs_count.emplace_back(input_image.size());
-  task_data_omp->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
-  task_data_omp->outputs_count.emplace_back(output_image.size());
+  auto task_data_tbb = std::make_shared<ppc::core::TaskData>();
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
+  task_data_tbb->inputs_count.emplace_back(input_image.size());
+  task_data_tbb->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
+  task_data_tbb->outputs_count.emplace_back(output_image.size());
 
-  stroganov_m_horiz_gaus3x3_omp::ImageFilterOmp image_filter_omp(task_data_omp);
+  stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb image_filter_tbb(task_data_tbb);
 
-  ASSERT_EQ(image_filter_omp.Validation(), true);
+  ASSERT_EQ(image_filter_tbb.Validation(), true);
 
-  image_filter_omp.PreProcessing();
-  image_filter_omp.Run();
-  image_filter_omp.PostProcessing();
+  image_filter_tbb.PreProcessing();
+  image_filter_tbb.Run();
+  image_filter_tbb.PostProcessing();
 
   double avg_input =
       std::accumulate(input_image.begin(), input_image.end(), 0.0) / static_cast<double>(input_image.size());
@@ -323,7 +323,7 @@ TEST(stroganov_m_horiz_gaus3x3_omp, RandomImage_MeanInvariant) {
   ASSERT_NEAR(avg_input, avg_output, 1);
 }
 
-TEST(stroganov_m_horiz_gaus3x3_omp, PointSource_Spread) {
+TEST(stroganov_m_horiz_gaus3x3_tbb, PointSource_Spread) {
   constexpr size_t kWidth = 5;
   constexpr size_t kHeight = 5;
   std::vector<double> input_image(kWidth * kHeight, 0.0);
@@ -336,20 +336,20 @@ TEST(stroganov_m_horiz_gaus3x3_omp, PointSource_Spread) {
   expected_output[(2 * kWidth) + 2] = 5.0;
   expected_output[(2 * kWidth) + 3] = 2.5;
 
-  auto task_data_omp = std::make_shared<ppc::core::TaskData>();
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
-  task_data_omp->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
-  task_data_omp->inputs_count.emplace_back(input_image.size());
-  task_data_omp->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
-  task_data_omp->outputs_count.emplace_back(output_image.size());
+  auto task_data_tbb = std::make_shared<ppc::core::TaskData>();
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(input_image.data()));
+  task_data_tbb->inputs.emplace_back(reinterpret_cast<uint8_t*>(kernel.data()));
+  task_data_tbb->inputs_count.emplace_back(input_image.size());
+  task_data_tbb->outputs.emplace_back(reinterpret_cast<uint8_t*>(output_image.data()));
+  task_data_tbb->outputs_count.emplace_back(output_image.size());
 
-  stroganov_m_horiz_gaus3x3_omp::ImageFilterOmp image_filter_omp(task_data_omp);
+  stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb image_filter_tbb(task_data_tbb);
 
-  ASSERT_EQ(image_filter_omp.Validation(), true);
+  ASSERT_EQ(image_filter_tbb.Validation(), true);
 
-  image_filter_omp.PreProcessing();
-  image_filter_omp.Run();
-  image_filter_omp.PostProcessing();
+  image_filter_tbb.PreProcessing();
+  image_filter_tbb.Run();
+  image_filter_tbb.PostProcessing();
 
   for (size_t i = 0; i < kHeight; ++i) {
     for (size_t j = 0; j < kWidth; ++j) {

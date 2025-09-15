@@ -33,8 +33,7 @@ bool stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb::RunImpl() {
   }
 
   tbb::parallel_for(
-      tbb::blocked_range<int>(0, height_),
-      [this, sum](const tbb::blocked_range<int>& range) {
+      tbb::blocked_range<int>(0, height_), [this, sum](const tbb::blocked_range<int>& range) {
         for (int i = range.begin(); i < range.end(); ++i) {
           output_[i * width_] = (kernel_[1] * input_[i * width_] + kernel_[2] * input_[(i * width_) + 1]) / sum;
           for (int j = 1; j < width_ - 1; ++j) {
