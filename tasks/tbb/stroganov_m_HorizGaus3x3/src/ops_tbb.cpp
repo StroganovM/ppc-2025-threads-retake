@@ -22,8 +22,8 @@ bool stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb::ValidationImpl() {
   kernel_ = std::vector<int>(kernel_ptr, kernel_ptr + 3);
   size_t size = input_.size();
   auto sqrt_size = static_cast<size_t>(std::sqrt(size));
-  return (task_data->inputs_count[0] == task_data->outputs_count[0]) && (kernel_.size() == 3) &&
-         (sqrt_size * sqrt_size == size);
+  return (task_data->inputs_count[0] == task_data->outputs_count[0]) &&
+         (kernel_.size() == 3) && (sqrt_size * sqrt_size == size);
 }
 
 bool stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb::RunImpl() {
@@ -32,20 +32,26 @@ bool stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb::RunImpl() {
     sum = 1.0;
   }
 
-  tbb::parallel_for(
-    tbb::blocked_range<int>(0, height_), [this, sum](const tbb::blocked_range<int>& range) {
-      for (int i = range.begin(); i < range.end(); ++i) {
-        output_[i * width_] = (kernel_[1] * input_[i * width_] + kernel_[2] * input_[(i * width_) + 1]) / sum;
-        for (int j = 1; j < width_ - 1; ++j) {
-          output_[(i * width_) + j] = (kernel_[0] * input_[(i * width_) + j - 1] + kernel_[1] * input_[(i * width_) + j] +
-                                      kernel_[2] * input_[(i * width_) + j + 1]) /
-                                      sum;
-        }
-        output_[(i * width_) + width_ - 1] =
-                (kernel_[0] * input_[(i * width_) + width_ - 2] + kernel_[1] * input_[(i * width_) + width_ - 1]) / sum;
-      }
-    }
-  );
+  tbb::parallel_for(tbb::blocked_range<int>(0, height_),
+                    [this, sum](const tbb::blocked_range<int> &range) {
+                      for (int i = range.begin(); i < range.end(); ++i) {
+                        output_[i * width_] =
+                            (kernel_[1] * input_[i * width_] +
+                             kernel_[2] * input_[(i * width_) + 1]) /
+                            sum;
+                        for (int j = 1; j < width_ - 1; ++j) {
+                          output_[(i * width_) + j] =
+                              (kernel_[0] * input_[(i * width_) + j - 1] +
+                               kernel_[1] * input_[(i * width_) + j] +
+                               kernel_[2] * input_[(i * width_) + j + 1]) /
+                              sum;
+                        }
+                        output_[(i * width_) + width_ - 1] =
+                            (kernel_[0] * input_[(i * width_) + width_ - 2] +
+                             kernel_[1] * input_[(i * width_) + width_ - 1]) /
+                            sum;
+                      }
+                    });
   return true;
 }
 
