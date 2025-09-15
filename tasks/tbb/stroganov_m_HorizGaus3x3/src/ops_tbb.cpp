@@ -42,10 +42,10 @@ bool stroganov_m_horiz_gaus3x3_tbb::ImageFilterTbb::RunImpl() {
             const int idx = row_offset + j;
             output_[idx] = (k0_inv * input_[idx - 1]) + (k1_inv * input_[idx]) + (k2_inv * input_[idx + 1]);
           }
-        const int last_idx = row_offset + width_ - 1;
-        output_[last_idx] = (k0_inv * input_[last_idx - 1]) + (k1_inv * input_[last_idx]);
-    }
-  });
+          const int last_idx = row_offset + width_ - 1;
+          output_[last_idx] = (k0_inv * input_[last_idx - 1]) + (k1_inv * input_[last_idx]);
+        }
+      });
   return true;
 }
 
