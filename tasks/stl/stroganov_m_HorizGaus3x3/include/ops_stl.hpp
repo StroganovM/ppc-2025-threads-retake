@@ -7,7 +7,7 @@
 
 namespace stroganov_m_horiz_gaus3x3_stl {
 
-class ImageFilterTbb : public ppc::core::Task {
+class ImageFilterStl : public ppc::core::Task {
  public:
   explicit ImageFilterStl(ppc::core::TaskDataPtr task_data) : Task(std::move(task_data)) {}
   bool PreProcessingImpl() override;
