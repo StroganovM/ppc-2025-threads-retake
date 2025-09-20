@@ -38,19 +38,19 @@ bool stroganov_m_horiz_gaus3x3_stl::ImageFilterStl::RunImpl() {
   std::vector<std::thread> threads;
   threads.reserve(num_threads);
 
-  const int rows_per_thread = height / num_threads;
+  const int rows_per_thread = height_ / num_threads;
   for (int t = 0; t < num_threads; ++t) {
     const int start_row = t * rows_per_thread;
-    const int end_row = (t == num_threads - 1) ? height : (start_row + rows_per_thread);
+    const int end_row = (t == num_threads - 1) ? height_ : (start_row + rows_per_thread);
     threads.emplace_back([=, &input = input_, &output = output_] {
       for (int i = start_row; i < end_row; ++i) {
-        const int row_offset = i * width;
+        const int row_offset = i * width_;
         output[row_offset] = (k1_inv * input[row_offset]) + (k2_inv * input[row_offset + 1]);
-        for (int j = 1; j < width - 1; ++j) {
+        for (int j = 1; j < width_ - 1; ++j) {
           const int idx = row_offset + j;
           output[idx] = (k0_inv * input[idx - 1]) + (k1_inv * input[idx]) + (k2_inv * input[idx + 1]);
         }
-        const int last_idx = row_offset + width - 1;
+        const int last_idx = row_offset + width_ - 1;
         output[last_idx] = (k0_inv * input[last_idx - 1]) + (k1_inv * input[last_idx]);
       }
     });

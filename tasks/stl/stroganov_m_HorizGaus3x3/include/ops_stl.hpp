@@ -5,7 +5,7 @@
 
 #include "core/task/include/task.hpp"
 
-namespace stroganov_m_horiz_gaus3x3_tbb {
+namespace stroganov_m_horiz_gaus3x3_stl {
 
 class ImageFilterTbb : public ppc::core::Task {
  public:
@@ -23,4 +23,4 @@ class ImageFilterTbb : public ppc::core::Task {
   std::vector<int> kernel_;
 };
 
-}  // namespace stroganov_m_horiz_gaus3x3_tbb
+}  // namespace stroganov_m_horiz_gaus3x3_stl
